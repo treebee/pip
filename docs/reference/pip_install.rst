@@ -283,6 +283,15 @@ installation error.
    FooProject >= 1.2 --install-option="--prefix=/usr/local --no-compile"
 
 
+The ``--no-deps`` option can be used to ignore the dependencies of a
+requirement as done in :ref:`--no-deps <install_--no-deps>`:
+
+::
+
+    FooProject >= 1.2 --no-deps
+    OtherProject == 2.0
+
+
 .. _`Pre Release Versions`:
 
 Pre-release Versions

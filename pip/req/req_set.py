@@ -365,12 +365,14 @@ class RequirementSet(object):
         discovered_reqs = []
         hash_errors = HashErrors()
         for req in chain(root_reqs, discovered_reqs):
+            ignore_deps = (self.ignore_dependencies or
+                           req.options.get('ignore_dependencies', False))
             try:
                 discovered_reqs.extend(self._prepare_file(
                     finder,
                     req,
                     require_hashes=require_hashes,
-                    ignore_dependencies=self.ignore_dependencies))
+                    ignore_dependencies=ignore_deps))
             except HashError as exc:
                 exc.req = req
                 hash_errors.append(exc)

@@ -518,3 +518,18 @@ def test_install_unsupported_wheel_file(script, data):
     assert ("simple.dist-0.1-py1-none-invalid.whl is not a supported " +
             "wheel on this platform" in result.stderr)
     assert len(result.files_created) == 0
+
+
+@pytest.mark.network
+def test_no_deps_option_in_requirements_file(script):
+    script.scratch_path.join("jinja2-req.txt").write(textwrap.dedent("""\
+        Flask==0.11.1 --no-deps\n
+        Jinja2==2.8
+        """))
+    result = script.pip(
+        'install', '-r', script.scratch_path / 'jinja2-req.txt'
+    )
+    assert script.site_packages / 'flask' in result.files_created
+    assert script.site_packages / 'jinja2' in result.files_created
+    assert script.site_packages / 'markupsafe' in result.files_created
+    assert script.site_packages / 'click' not in result.files_created
